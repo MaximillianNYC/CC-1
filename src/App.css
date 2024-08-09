@@ -2,37 +2,77 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.mainContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: #F1F1F1;
+  min-height: 100dvh;
 }
 
-.App-link {
-  color: #61dafb;
+.calculator {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input {
+  caret-color: #F15A22;
+  display: flex;
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  padding: 24px 0px;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  gap: 10px;
+  border-radius: 24px;
+  background: #FFF;
+  color: #000000;
+  font-family: Helvetica;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  border: 0px;
+}
+
+input::placeholder {
+  color: #959595; 
+}
+
+.operation, .operationMenuButton {
+  cursor: pointer;
+  outline: 0px solid #F15A22;
+  transition: outline 0.05s;
+  border-radius: 100%;
+}
+
+.operation:hover, .operationMenuButton:hover {
+  outline: 2px solid #F15A22;
+}
+
+.solution {
+  display: flex;
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  padding: 24px 24px;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  gap: 10px;
+  border-radius: 24px;
+  background: #FFF;
+  font-family: Helvetica;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border: 0px;
 }
