@@ -69,7 +69,6 @@ function App() {
   return (
     <div className="App">
       <main className="mainContainer">
-        HELLO
         <div className='calculator'>
           {operations.map((op, index) => (
             <React.Fragment key={op.id}>

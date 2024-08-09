@@ -4,6 +4,7 @@ import '../App.css';
 
 const Solution = ({ allFilled }) => {
     const [displayedResult, setDisplayedResult] = useState('');
+    const [showFrog, setShowFrog] = useState(false);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -13,21 +14,27 @@ const Solution = ({ allFilled }) => {
         return () => clearTimeout(timeoutId);
     }, [allFilled]);
 
+    const handleClick = () => {
+        if (displayedResult === "calculate") {
+            setShowFrog(true);
+        }
+    };
+
     const solutionStyle = {
-        color: displayedResult === "calculate" ? '#ffffff' : '#959595',
-        background: displayedResult === "calculate" ? '#F15A22' : '#ffffff',
+        color: showFrog ? '#959595' : (displayedResult === "calculate" ? '#ffffff' : '#959595'),
+        background: showFrog ? '#ffffff' : (displayedResult === "calculate" ? '#F15A22' : '#ffffff'),
         cursor: displayedResult === "calculate" ? 'pointer' : 'not-allowed',
     };
 
     return (
-      <div className="solution" style={solutionStyle}>
-        {displayedResult}
-      </div>
+        <div className="solution" style={solutionStyle} onClick={handleClick}>
+            {showFrog ? "frog" : displayedResult}
+        </div>
     );
-  };
+};
 
-  Solution.propTypes = {
+Solution.propTypes = {
     allFilled: PropTypes.bool.isRequired,
 };
-  
-  export default Solution;
+
+export default Solution;
