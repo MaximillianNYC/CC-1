@@ -9,8 +9,7 @@ function App() {
     { id: 1, input: '', operation: '+' },
     { id: 2, input: '', operation: '=' }
   ]);
-  
-  const [allFilled, setAllFilled] = useState(false);
+  const [calcEquation, setCalcEquation] = useState(false);
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -62,8 +61,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setCalcEquation(false);
     const allInputsFilled = operations.every(op => op.input.trim() !== '');
-    setAllFilled(allInputsFilled);
+      if (allInputsFilled) {
+        setCalcEquation(true);
+      }
   }, [operations]);
 
   return (
@@ -87,7 +89,7 @@ function App() {
               />
             </React.Fragment>
           ))}
-          <Solution allFilled={allFilled} />
+          <Solution calcEquation={calcEquation} />
         </div>
       </main>
     </div>
