@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import './App.css';
 import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
@@ -9,8 +9,8 @@ function App() {
     { id: 1, input: '', operation: '+' },
     { id: 2, input: '', operation: '=' }
   ]);
-  
-  const [allFilled, setAllFilled] = useState(false);
+  const [calcEquation, setCalcEquation] = useState(false);
+  const prevOperationsRef = useRef();
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -63,7 +63,16 @@ function App() {
 
   useEffect(() => {
     const allInputsFilled = operations.every(op => op.input.trim() !== '');
-    setAllFilled(allInputsFilled);
+    const inputsChanged = prevOperationsRef.current && operations.some((op, index) => {
+      const prevOp = prevOperationsRef.current[index];
+      return prevOp && op.input.trim() !== prevOp.input.trim();
+    });
+    if (!allInputsFilled || inputsChanged) {
+      setCalcEquation(false);
+    } else {
+      setCalcEquation(true);
+    }
+    prevOperationsRef.current = operations;
   }, [operations]);
 
   return (
@@ -87,7 +96,7 @@ function App() {
               />
             </React.Fragment>
           ))}
-          <Solution allFilled={allFilled} />
+          <Solution calcEquation={calcEquation} />
         </div>
       </main>
     </div>

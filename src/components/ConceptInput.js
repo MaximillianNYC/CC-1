@@ -52,6 +52,7 @@ const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add con
         outline: (isFocused || isHovered) ? '2px solid #F15A22' : '0px solid #F15A22',
         paddingLeft: '70px',
         boxSizing: 'border-box',
+        fontWeight: inputValue ? 500 : 300,
     };
 
     useEffect(() => {
