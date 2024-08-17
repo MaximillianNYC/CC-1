@@ -77,6 +77,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className='Nav'>CC-1 CONCEPT CALCULATOR</div>
       <main className="mainContainer">
         <div className='calculator'>
           {operations.map((op, index) => (
@@ -86,7 +87,6 @@ function App() {
                 onChange={(value) => handleInputChange(op.id, value)}
                 onDelete={() => handleInputDelete(op.id)}
                 emojiOnBlur="🤔"
-                //initialWidth="316px"
               />
               <Operation
                 className='operation'
@@ -99,6 +99,7 @@ function App() {
           <Solution calcEquation={calcEquation} />
         </div>
       </main>
+      <div className='Footer'>MADE BY MAXIMILLIAN PIRAS</div>
     </div>
   );
 }
