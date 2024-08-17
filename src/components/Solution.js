@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
 
-const Solution = ({ calcEquation }) => {
+const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
     const [displayedResult, setDisplayedResult] = useState('');
     const [showCalculation, setShowCalculation] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -53,10 +53,11 @@ const Solution = ({ calcEquation }) => {
             }
             setTimeout(() => setIsLoading(true), 150);
             setTimeout(() => setShowCalculation(true), 200);
-            setTimeout(() => {
+            setTimeout(async () => {
+                await getAISolution();
                 setIsLoading(false);
                 if (solutionRef.current) {
-                    solutionRef.current.style.width = updateWidth("result");
+                    solutionRef.current.style.width = updateWidth(aiSolution || "result");
                 }
             }, 1000);
         }
@@ -112,6 +113,8 @@ const Solution = ({ calcEquation }) => {
 
 Solution.propTypes = {
     calcEquation: PropTypes.bool.isRequired,
+    aiSolution: PropTypes.string,
+    getAISolution: PropTypes.func.isRequired,
 };
 
 export default Solution;
