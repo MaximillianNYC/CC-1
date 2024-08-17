@@ -13,8 +13,8 @@ function App() {
   const [calcEquation, setCalcEquation] = useState(false);
   const [aiSolution, setAiSolution] = useState('');
   const prevOperationsRef = useRef();
-
-
+  const [conceptEmojis, setConceptEmojis] = useState({});
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -22,7 +22,6 @@ function App() {
         if (op.id === id) {
           return { ...op, operation: newOperation };
         }
-        // Ensure the last operation is always '='
         if (op.id === prevOps[prevOps.length - 1].id) {
           return { ...op, operation: '=' };
         }
@@ -33,14 +32,46 @@ function App() {
 
   const handleOperationAddition = useCallback(() => {
     setOperations(prev => {
-      const newId = Math.max(...prev.map(op => op.id)) + 1;
+      const newId = Math.max(...prev.map(op => op.id), 0) + 1;
       const mostRecentOperation = prev[prev.length - 1].operation;
       return [
-        ...prev.slice(0, -1),
-        { id: newId - 1, input: '', operation: mostRecentOperation },
-        { id: newId, input: '', operation: '=' }
+        ...prev.slice(0, -1), // Keep all but the last operation
+        { ...prev[prev.length - 1], operation: mostRecentOperation }, // Update the operation of the previous last item
+        { id: newId + 1, input: '', operation: '=' } // Add new empty operation
       ];
     });
+    
+    setConceptEmojis(prev => {
+      const newId = Math.max(...Object.keys(prev).map(Number), 0) + 1;
+      return { 
+        ...prev, 
+        [newId + 1]: '🤔' 
+      };
+    });
+  }, []);
+
+  const getConceptEmoji = useCallback(async (id, text) => {
+    if (!text.trim()) return;
+    try {
+      const response = await axios.post('http://localhost:3001/api/openai/emoji-generator', {
+        messages: [{ 
+          role: "user", 
+          content: `Given the concept "${text}", suggest a single emoji that best represents it. Respond with only the emoji, nothing else.`
+        }],
+        max_tokens: 5,
+      });
+      
+      if (response.data && response.data.emoji) {
+        const emoji = response.data.emoji.trim();
+        setConceptEmojis(prev => ({ ...prev, [id]: emoji }));
+      } else {
+        console.error('Unexpected API response structure:', response.data);
+        setConceptEmojis(prev => ({ ...prev, [id]: '❓' }));
+      }
+    } catch (error) {
+      console.error('Error calling OpenAI API for emoji:', error);
+      setConceptEmojis(prev => ({ ...prev, [id]: '❓' }));
+    }
   }, []);
 
   const handleInputChange = useCallback((id, value) => {
@@ -49,50 +80,84 @@ function App() {
     ));
   }, []);
 
+  const handleInputBlur = useCallback((id, value) => {
+    const stringValue = String(value);
+    if (stringValue.trim()) {
+      getConceptEmoji(id, stringValue);
+    }
+  }, [getConceptEmoji]);
+
   const handleInputDelete = useCallback((id) => {
     setOperations(prev => {
       const index = prev.findIndex(op => op.id === id);
       if (index === -1) return prev;
       let newOperations = [...prev];
-      if (newOperations.length > 1) {
+      if (newOperations.length > 2) {
         newOperations.splice(index, 1);
-        if (index < newOperations.length) {
-          newOperations[index].input = prev[index].input;
-          newOperations[index].inputWidth = prev[index].inputWidth;
-        }
-        if (newOperations.length > 0) {
-          newOperations[newOperations.length - 1].operation = '=';
-        }
+        // Preserve operations and update IDs
+        newOperations = newOperations.map((op, i) => {
+          if (i === newOperations.length - 1) {
+            return { ...op, id: i + 1, operation: '=' };
+          }
+          return { ...op, id: i + 1, operation: i === index ? op.operation : prev[i].operation };
+        });
       } else {
-        newOperations[0].input = '';
+        // If only two items left, reset the first one and remove the second
+        newOperations = [{ id: 1, input: '', operation: '+' }];
       }
       return newOperations;
+    });
+
+    setConceptEmojis(prev => {
+      const { [id]: deletedEmoji, ...rest } = prev;
+      // Update emoji IDs to match new operation IDs
+      const updatedRest = Object.entries(rest).reduce((acc, [key, value], index) => {
+        acc[index + 1] = value;
+        return acc;
+      }, {});
+      return updatedRest;
     });
   }, []);
 
   useEffect(() => {
+    console.log('Current operations:', operations);
+    console.log('Previous operations:', prevOperationsRef.current);
+
     const allInputsFilled = operations.every(op => op.input.trim() !== '');
-    const inputsChanged = prevOperationsRef.current && operations.some((op, index) => {
-      const prevOp = prevOperationsRef.current[index];
-      return prevOp && op.input.trim() !== prevOp.input.trim();
-    });
-    if (!allInputsFilled || inputsChanged) {
+    console.log('All inputs filled:', allInputsFilled);
+
+    const inputsChanged = prevOperationsRef.current
+      ? JSON.stringify(operations) !== JSON.stringify(prevOperationsRef.current)
+      : true;
+    console.log('Inputs changed:', inputsChanged);
+
+    if (allInputsFilled) {
+      if (inputsChanged && hasCalculated) {
+        console.log('Inputs changed after calculation, setting calcEquation to true');
+        setCalcEquation(true);
+        setAiSolution('');
+        setHasCalculated(false);  // Reset hasCalculated
+      } else if (!hasCalculated) {
+        console.log('All inputs filled, no calculation yet, setting calcEquation to true');
+        setCalcEquation(true);
+      }
+    } else {
+      console.log('Not all inputs filled, setting calcEquation to false');
       setCalcEquation(false);
       setAiSolution('');
-    } else {
-      setCalcEquation(true);
+      setHasCalculated(false);
     }
-    prevOperationsRef.current = operations;
-  }, [operations]);
+
+    prevOperationsRef.current = JSON.parse(JSON.stringify(operations));
+  }, [operations, hasCalculated]);
 
   const getEquationString = () => {
     return operations
       .map((op, index) => {
-        // For the last operation (which should be '='), we don't want to include it in the string
         if (index === operations.length - 1) {
-          return op.input;
+          return String(op.input);
         }
-        return `${op.input} ${op.operation}`;
+        return `${String(op.input)} ${op.operation}`;
       })
       .join(' ')
       .trim();
@@ -102,22 +167,18 @@ function App() {
     const equation = getEquationString();
     console.log(equation);
     try {
-      const response = await axios.post('https://api.anthropic.com/v1/chat/completions', {
-        model: "claude-3-opus-20240229",
+      const response = await axios.post('http://localhost:3001/api/openai/concept-calculator', {
         messages: [{ 
           role: "user", 
-          content: `Solve this conceptual equation and explain the result: ${equation}. Keep your response under 100 words.`
+          content: `Solve this conceptual equation: ${equation}. Respond in a single concept preceeded by an emoji that best illustrates the concept. Match the case format of the input text.`
         }],
         max_tokens: 1000,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.REACT_APP_ANTHROPIC_API_KEY,
-        }
       });
-      setAiSolution(response.data.choices[0].message.content);
+      const aiResponse = response.data.choices[0].message.content;
+      setAiSolution(aiResponse);
+      setHasCalculated(true);  // Set this to true after successful calculation
     } catch (error) {
-      console.error('Error calling Anthropic API:', error);
+      console.error('Error calling OpenAI API:', error);
       setAiSolution('Error: Unable to get solution from AI');
     }
   };
@@ -130,12 +191,17 @@ function App() {
           {operations.map((op, index) => (
             <React.Fragment key={op.id}>
               <ConceptInput
+                key={`input-${op.id}`}
+                id={op.id}
                 value={op.input}
                 onChange={(value) => handleInputChange(op.id, value)}
+                onBlur={(value) => handleInputBlur(op.id, value)}
                 onDelete={() => handleInputDelete(op.id)}
-                emojiOnBlur="🤔"
+                currentEmoji={conceptEmojis[op.id] || "🤔"}
+                initialWidth="316px"
               />
               <Operation
+                key={`operation-${op.id}`}
                 className='operation'
                 character={op.operation}
                 onCharacterChange={(newOp) => handleCharacterChange(op.id, newOp)}

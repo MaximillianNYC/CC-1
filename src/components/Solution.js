@@ -20,8 +20,7 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
         if (content === "???") return '50px';
         if (content === "calculate") return '130px';
         if (content === "loading") return '150px';
-        //const emojiWidth = 40;
-        const padding = 56;
+        const padding = 40;
         const textWidth = calculateTextWidth(content);
         const calculatedWidth = textWidth + padding;
         const newWidth = Math.max(calculatedWidth);
@@ -42,9 +41,18 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
                 solutionRef.current.style.width = updateWidth(newResult);
             }
         }, 1000);
-
         return () => clearTimeout(timeoutId);
     }, [calcEquation, updateWidth]);
+
+    useEffect(() => {
+        if (aiSolution) {
+            setShowCalculation(true);
+            setIsLoading(false);
+            if (solutionRef.current) {
+                solutionRef.current.style.width = updateWidth(aiSolution);
+            }
+        }
+    }, [aiSolution, updateWidth]);
 
     const handleClick = () => {
         if (displayedResult === "calculate" && !showCalculation) {
@@ -80,10 +88,13 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
                 </>
             );
         }
+        if (showCalculation && aiSolution) {
+            return aiSolution;
+        }
         if (showCalculation) {
             return (
                 <>
-                    <span role="img" aria-label="happy">😊</span> result
+                    <span role="img" aria-label="sad">😔</span> plz fix
                 </>
             );
         }

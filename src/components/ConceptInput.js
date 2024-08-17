@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
 
-const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add concept', initialEmoji = '🤔', emojiOnFocus = '🤔', emojiOnBlur }) => {
-    const [inputValue, setInputValue] = useState('');
+const ConceptInput = ({ value, onChange, onBlur, onDelete, currentEmoji, initialWidth = '316px', placeholder = 'add concept', id }) => {
+    const [inputValue, setInputValue] = useState(value);
     const [isFocused, setIsFocused] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const [currentEmoji, setCurrentEmoji] = useState(initialEmoji);
     const inputRef = useRef(null);
-    const defaultInputWidth = '316px';
+    const defaultInputWidth = initialWidth;
 
     const calculateTextWidth = useCallback((text) => {
         const canvas = document.createElement('canvas');
@@ -38,14 +37,22 @@ const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add con
         return `${newWidth}px`;
     }, [calculateTextWidth, isFocused, defaultInputWidth]);
 
-    const memoizedOnChange = useCallback((value, width) => {
-        onChange(value, width);
-    }, [onChange]);
-    
     useEffect(() => {
         const newWidth = updateWidth(inputValue);
-        memoizedOnChange(inputValue, newWidth);
-    }, [inputValue, updateWidth, memoizedOnChange]);
+        if (inputRef.current) {
+            inputRef.current.style.width = newWidth;
+        }
+    }, [inputValue, updateWidth]);
+
+    useEffect(() => {
+        setInputValue(value);
+    }, [value]);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.style.width = initialWidth;
+        }
+    }, [initialWidth]);
 
     const inputStyle = {
         transition: 'width 0.1s, outline 0.05s',
@@ -55,17 +62,26 @@ const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add con
         fontWeight: inputValue ? 500 : 300,
     };
 
-    useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.style.width = initialWidth;
+    const handleChange = (e) => {
+        const newValue = e.target.value;
+        setInputValue(newValue);
+        onChange(newValue);
+    };
+
+    const handleBlur = (e) => {
+        setIsFocused(false);
+        e.target.placeholder = inputValue === '' ? placeholder : '';
+        if (inputValue === '') {
+            e.target.style.width = '316px';
         }
-    }, [initialWidth]);
+        onBlur(e.target.value);
+    };
 
     return (
         <div style={{ 
             position: 'relative', 
             display: 'inline-block' 
-        }}> {}
+        }}>
         <span 
             role="img" 
             aria-label="emoji" 
@@ -77,40 +93,29 @@ const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add con
                 fontSize: '32px' 
             }}
         >
-            {currentEmoji} {}
+            {currentEmoji}
         </span>
         <input
             ref={inputRef}
             className="conceptInput"
             type="text"
             value={inputValue}
-            onChange={(e) => {
-                const newValue = e.target.value;
-                setInputValue(newValue);
-            }}
+            onChange={handleChange}
             placeholder={isFocused && inputValue === '' ? '' : placeholder}
             onFocus={(e) => {
                 setIsFocused(true);
-                setCurrentEmoji(emojiOnFocus);
                 if (inputValue === '') {
                     e.target.placeholder = '';
                     e.target.style.width = '130px';
                 }
             }}
-            onBlur={(e) => {
-                setIsFocused(false);
-                setCurrentEmoji(emojiOnBlur);
-                e.target.placeholder = inputValue === '' ? placeholder : '';
-                if (inputValue === '') {
-                    e.target.style.width = '316px';
-                }
-            }}
+            onBlur={handleBlur}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={inputStyle}
         />
         <button
-            onClick={onDelete}
+            onClick={() => onDelete(id)}
             style={{
                 position: 'absolute',
                 right: '16px',
@@ -130,11 +135,12 @@ const ConceptInput = ({ onChange, onDelete, initialWidth, placeholder = 'add con
 ConceptInput.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    initialWidth: PropTypes.string.isRequired,
+    currentEmoji: PropTypes.string.isRequired,
+    initialWidth: PropTypes.string,
     placeholder: PropTypes.string,
-    emojiOnFocus: PropTypes.string,
-    emojiOnBlur: PropTypes.string,
+    id: PropTypes.number.isRequired,
 };
 
 export default ConceptInput;
