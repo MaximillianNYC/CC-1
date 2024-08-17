@@ -20,7 +20,7 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
     const { messages, max_tokens } = req.body;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini-2024-07-18",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system", content: "You are a neural network trained on natural language embedded in a multidimensional vector space. This allows you to perform mathematical operations to calculate the distance between words, such as king - man = queen. A user will provide you with a sequence of words formatted into a mathematical equation and you will output a conceptual solution." },
         ...messages
@@ -42,7 +42,7 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
     console.log('Received request for emoji generation:', messages);
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini-2024-07-18",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system", content: "You are an AI that suggests a single emoji that best represents a given concept. Respond with only the emoji, nothing else." },
         ...messages

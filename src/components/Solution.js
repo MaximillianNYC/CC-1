@@ -5,7 +5,7 @@ import '../App.css';
 const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
     const [displayedResult, setDisplayedResult] = useState('');
     const [showCalculation, setShowCalculation] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const solutionRef = useRef(null);
     const defaultWidth = '150px';
 
@@ -23,16 +23,16 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
         const padding = 40;
         const textWidth = calculateTextWidth(content);
         const calculatedWidth = textWidth + padding;
-        const newWidth = Math.max(calculatedWidth);
+        const newWidth = Math.max(calculatedWidth, 130);
         return `${newWidth}px`;
     }, [calculateTextWidth]);
 
     useEffect(() => {
         setShowCalculation(false);
+        setIsLoading(true);
         if (solutionRef.current) {
             solutionRef.current.style.width = updateWidth("loading");
         }
-        setTimeout(() => setIsLoading(true), 150);
         const timeoutId = setTimeout(() => {
             const newResult = calcEquation ? "calculate" : "???";
             setDisplayedResult(newResult);
@@ -51,33 +51,31 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
             if (solutionRef.current) {
                 solutionRef.current.style.width = updateWidth(aiSolution);
             }
+        } else {
+            setShowCalculation(false);
         }
     }, [aiSolution, updateWidth]);
 
     const handleClick = () => {
-        if (displayedResult === "calculate" && !showCalculation) {
+        if (calcEquation && !showCalculation && !isLoading) {
+            setIsLoading(true);
             if (solutionRef.current) {
                 solutionRef.current.style.width = updateWidth("loading");
             }
-            setTimeout(() => setIsLoading(true), 150);
-            setTimeout(() => setShowCalculation(true), 200);
             setTimeout(async () => {
                 await getAISolution();
                 setIsLoading(false);
-                if (solutionRef.current) {
-                    solutionRef.current.style.width = updateWidth(aiSolution || "result");
-                }
             }, 1000);
         }
     };
 
     const solutionStyle = {
         transition: 'color 0.1s ease, background 0.3s ease, opacity 0.3s ease, transform 0.3s ease, width 0.3s ease',
-        color: showCalculation ? '#000000' : (displayedResult === "calculate" ? '#ffffff' : '#959595'),
-        background: showCalculation ? '#ffffff' : (displayedResult === "calculate" ? '#F15A22' : '#ffffff'),
-        cursor: displayedResult === "calculate" && !showCalculation ? 'pointer' : 'not-allowed',
-        fontWeight: showCalculation || displayedResult === "calculate" ? 500 : 300,
-        width: defaultWidth,
+        color: showCalculation ? '#000000' : (calcEquation ? '#ffffff' : '#959595'),
+        background: showCalculation ? '#ffffff' : (calcEquation ? '#F15A22' : '#ffffff'),
+        cursor: calcEquation && !showCalculation && !isLoading ? 'pointer' : 'not-allowed',
+        fontWeight: showCalculation || calcEquation ? 500 : 300,
+        width: solutionRef.current ? solutionRef.current.style.width : defaultWidth,
     };
 
     const getDisplayContent = () => {
@@ -91,28 +89,18 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
         if (showCalculation && aiSolution) {
             return aiSolution;
         }
-        if (showCalculation) {
-            return (
-                <>
-                    <span role="img" aria-label="sad">😔</span> plz fix
-                </>
-            );
-        }
-        if (displayedResult === "calculate") {
+        if (calcEquation) {
             return (
                 <>
                     calculate
                 </>
             );
         }
-        if (displayedResult === "???") {
-            return (
-                <>
-                    ???
-                </>
-            );
-        }
-        return displayedResult;
+        return (
+            <>
+                ???
+            </>
+        );
     };
 
     return (

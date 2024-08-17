@@ -35,9 +35,9 @@ function App() {
       const newId = Math.max(...prev.map(op => op.id), 0) + 1;
       const mostRecentOperation = prev[prev.length - 1].operation;
       return [
-        ...prev.slice(0, -1), // Keep all but the last operation
-        { ...prev[prev.length - 1], operation: mostRecentOperation }, // Update the operation of the previous last item
-        { id: newId + 1, input: '', operation: '=' } // Add new empty operation
+        ...prev.slice(0, -1),
+        { ...prev[prev.length - 1], operation: mostRecentOperation },
+        { id: newId + 1, input: '', operation: '=' }
       ];
     });
     
@@ -58,7 +58,7 @@ function App() {
           role: "user", 
           content: `Given the concept "${text}", suggest a single emoji that best represents it. Respond with only the emoji, nothing else.`
         }],
-        max_tokens: 5,
+        max_tokens: 1,
       });
       
       if (response.data && response.data.emoji) {
@@ -94,7 +94,6 @@ function App() {
       let newOperations = [...prev];
       if (newOperations.length > 2) {
         newOperations.splice(index, 1);
-        // Preserve operations and update IDs
         newOperations = newOperations.map((op, i) => {
           if (i === newOperations.length - 1) {
             return { ...op, id: i + 1, operation: '=' };
@@ -102,7 +101,6 @@ function App() {
           return { ...op, id: i + 1, operation: i === index ? op.operation : prev[i].operation };
         });
       } else {
-        // If only two items left, reset the first one and remove the second
         newOperations = [{ id: 1, input: '', operation: '+' }];
       }
       return newOperations;
@@ -110,7 +108,6 @@ function App() {
 
     setConceptEmojis(prev => {
       const { [id]: deletedEmoji, ...rest } = prev;
-      // Update emoji IDs to match new operation IDs
       const updatedRest = Object.entries(rest).reduce((acc, [key, value], index) => {
         acc[index + 1] = value;
         return acc;
@@ -120,26 +117,20 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log('Current operations:', operations);
-    console.log('Previous operations:', prevOperationsRef.current);
-
     const allInputsFilled = operations.every(op => op.input.trim() !== '');
-    console.log('All inputs filled:', allInputsFilled);
-
     const inputsChanged = prevOperationsRef.current
       ? JSON.stringify(operations) !== JSON.stringify(prevOperationsRef.current)
       : true;
-    console.log('Inputs changed:', inputsChanged);
 
     if (allInputsFilled) {
-      if (inputsChanged && hasCalculated) {
-        console.log('Inputs changed after calculation, setting calcEquation to true');
-        setCalcEquation(true);
+      console.log('All inputs filled, setting calcEquation to true');
+      setCalcEquation(true);
+      if (inputsChanged) {
+        console.log('Inputs changed, resetting solution');
         setAiSolution('');
-        setHasCalculated(false);  // Reset hasCalculated
-      } else if (!hasCalculated) {
-        console.log('All inputs filled, no calculation yet, setting calcEquation to true');
-        setCalcEquation(true);
+        setHasCalculated(false);
+        setCalcEquation(false);
+        setTimeout(() => setCalcEquation(true), 0);
       }
     } else {
       console.log('Not all inputs filled, setting calcEquation to false');
@@ -147,9 +138,8 @@ function App() {
       setAiSolution('');
       setHasCalculated(false);
     }
-
     prevOperationsRef.current = JSON.parse(JSON.stringify(operations));
-  }, [operations, hasCalculated]);
+  }, [operations]);
 
   const getEquationString = () => {
     return operations
@@ -165,7 +155,6 @@ function App() {
 
   const getAISolution = async () => {
     const equation = getEquationString();
-    console.log(equation);
     try {
       const response = await axios.post('http://localhost:3001/api/openai/concept-calculator', {
         messages: [{ 
@@ -176,7 +165,7 @@ function App() {
       });
       const aiResponse = response.data.choices[0].message.content;
       setAiSolution(aiResponse);
-      setHasCalculated(true);  // Set this to true after successful calculation
+      setHasCalculated(true);
     } catch (error) {
       console.error('Error calling OpenAI API:', error);
       setAiSolution('Error: Unable to get solution from AI');
