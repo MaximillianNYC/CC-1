@@ -20,10 +20,10 @@ const Solution = ({ calcEquation, aiSolution, getAISolution }) => {
         if (content === "???") return '50px';
         if (content === "calculate") return '130px';
         if (content === "loading") return '150px';
-        const padding = 40;
+        const padding = 8;
         const textWidth = calculateTextWidth(content);
         const calculatedWidth = textWidth + padding;
-        const newWidth = Math.max(calculatedWidth, 130);
+        const newWidth = Math.max(calculatedWidth, 30);
         return `${newWidth}px`;
     }, [calculateTextWidth]);
 
