@@ -159,7 +159,7 @@ function App() {
       const response = await axios.post('http://localhost:3001/api/openai/concept-calculator', {
         messages: [{ 
           role: "user", 
-          content: `Solve this conceptual equation: ${equation}. Respond in a single concept preceeded by an emoji that best illustrates the concept. Match the case format of the input text.`
+          content: `Solve this conceptual equation: ${equation}. Respond in a single concept preceeded by an emoji that best illustrates the concept. Match the case format of the input text. Avoid uncreative combinations of the input words, instead be creative in your answer.`
         }],
         max_tokens: 1000,
       });
@@ -205,7 +205,9 @@ function App() {
           />
         </div>
       </main>
-      <div className='Footer'>MADE BY MAXIMILLIAN PIRAS</div>
+      <div className='Footer'>
+          MADE BY <a href="https://www.maximillian.nyc" target="_blank" rel="noopener noreferrer">MAXIMILLIAN PIRAS</a>
+      </div>
     </div>
   );
 }

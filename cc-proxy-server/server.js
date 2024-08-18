@@ -20,7 +20,17 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are a neural network trained on natural language embedded in a multidimensional vector space. This allows you to perform mathematical operations to calculate the distance between words, such as king - man = queen. A user will provide you with a sequence of words formatted into a mathematical equation and you will output a conceptual solution. See the following examples delimitted by triple backticks: ```ramen + more noodles = 😋 kaedama``` ```dog + house = 🐶 doghouse```" },
+        { role: "system", content: `You are an advanced Concept Calculator, designed to interpret input expressions that represent abstract relationships between concepts. Your goal is to analyze the words representing these concepts, locate their corresponding dot products in your training data, then use the specific operations provided to do arithmetic on their semantic embeddings to return a corresponding dot product which will you map to the closests corresponding natural language.
+
+        Follow this process:
+        1. Review the input expression and isolate each set of words inbetween operations (e.g. if the expression is "king - man + woman" you should create this array: "king, man, woman").
+        2. Individually map each set of words to a corresponding dot product in the vector database from your training data (e.g. take your array, "king, man, woman", and find their corresponding dot products, "(123), (456), (789)").
+        3. Use these dot products to rewrite the input expression with numbers instead of words (e.g. "king - man + woman" becomes "(123) - (456) + (789)").
+        4. Perform the numerical arithmatic to arrive at a numerical solution.
+        5. Use this numerical solution to find the closest dot product(s) in the vector database from your training data.
+        6. Take this dot product's corresponding sematic embedding & provide it to the user as the answer to their equation.
+
+        Apply this approach consistently to all input equations. Focus on ensuring that each step of the process is logically sound and conceptually meaningful. Let's think step by step.` },
         ...messages
       ],
       max_tokens: max_tokens || 1000,
@@ -41,7 +51,7 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
         { role: "system", content: "You are an AI that suggests a single emoji that best represents a given concept. Respond with only the emoji, nothing else." },
         ...messages
       ],
-      max_tokens: 5,
+      max_tokens: 1,
     });
 
     console.log('OpenAI API Response:', completion);

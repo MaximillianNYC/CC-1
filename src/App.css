@@ -9,6 +9,11 @@
   width: 100vw;
 }
 
+a {
+  display: block;
+  color: #F15A22;
+}
+
 .Nav {
   display: flex;
   flex-direction: column;
@@ -26,9 +31,10 @@
 
 .Footer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   height: 40px;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
