@@ -161,6 +161,7 @@ function App() {
         max_tokens: 1000,
       });
       const aiResponse = response.data.choices[0].message.content;
+      console.log(`${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
       setHasCalculated(true);
     } catch (error) {
