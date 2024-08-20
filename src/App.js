@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import axios from 'axios';  
 import './App.css';
 import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
+import API from './API.js';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -50,26 +50,13 @@ function App() {
     });
   }, []);
 
-  const getConceptEmoji = useCallback(async (id, text) => {
+  const handleGetConceptEmoji = useCallback(async (id, text) => {
     if (!text.trim()) return;
     try {
-      const response = await axios.post('http://localhost:3001/api/openai/emoji-generator', {
-        messages: [{ 
-          role: "user", 
-          content: `Given the concept "${text}", suggest a single emoji that best represents it. Respond with only the emoji, nothing else.`
-        }],
-        max_tokens: 1,
-      });
-      
-      if (response.data && response.data.emoji) {
-        const emoji = response.data.emoji.trim();
-        setConceptEmojis(prev => ({ ...prev, [id]: emoji }));
-      } else {
-        console.error('Unexpected API response structure:', response.data);
-        setConceptEmojis(prev => ({ ...prev, [id]: '❓' }));
-      }
+      const emoji = await API.getConceptEmoji(text);
+      setConceptEmojis(prev => ({ ...prev, [id]: emoji }));
     } catch (error) {
-      console.error('Error calling OpenAI API for emoji:', error);
+      console.error('Error getting concept emoji:', error);
       setConceptEmojis(prev => ({ ...prev, [id]: '❓' }));
     }
   }, []);
@@ -83,9 +70,9 @@ function App() {
   const handleInputBlur = useCallback((id, value) => {
     const stringValue = String(value);
     if (stringValue.trim()) {
-      getConceptEmoji(id, stringValue);
+      handleGetConceptEmoji(id, stringValue);
     }
-  }, [getConceptEmoji]);
+  }, [handleGetConceptEmoji]);
 
   const handleInputDelete = useCallback((id) => {
     setOperations(prev => {
@@ -150,22 +137,24 @@ function App() {
       .trim();
   };
 
-  const getAISolution = async () => {
+  const handleGetAISolution = async () => {
     const equation = getEquationString();
+    console.log('Equation to be sent:', equation); // Log the equation
+
+    if (!equation.trim()) {
+      console.error('Equation is empty');
+      setAiSolution('Error: Equation is empty');
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:3001/api/openai/concept-calculator', {
-        messages: [{ 
-          role: "user", 
-          content: `Solve this conceptual equation: ${equation}. Respond in a single concept preceeded by an emoji that best illustrates the concept. Match the case format of the input text. Avoid uncreative combinations of the input words, instead be creative in your answer.`
-        }],
-        max_tokens: 1000,
-      });
-      const aiResponse = response.data.choices[0].message.content;
-      console.log(`${equation} = ${aiResponse}`);
+      console.log('Sending equation to API:', equation);
+      const aiResponse = await API.getAISolution(equation);
+      console.log(`Received response: ${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
       setHasCalculated(true);
     } catch (error) {
-      console.error('Error calling OpenAI API:', error);
+      console.error('Error getting AI solution:', error);
       setAiSolution('Error: Unable to get solution from AI');
     }
   };
@@ -199,7 +188,7 @@ function App() {
           <Solution 
             calcEquation={calcEquation} 
             aiSolution={aiSolution}
-            getAISolution={getAISolution}
+            getAISolution={handleGetAISolution}
           />
         </div>
       </main>

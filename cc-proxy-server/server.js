@@ -16,7 +16,7 @@ const openai = new OpenAI({
   
 app.post('/api/openai/concept-calculator', async (req, res) => {
   try {
-    const { messages, max_tokens } = req.body;
+    const { messages } = req.body;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -33,7 +33,7 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
         Apply this approach consistently to all input equations. Focus on ensuring that each step of the process is logically sound and conceptually meaningful. Let's think step by step.` },
         ...messages
       ],
-      max_tokens: max_tokens || 1000,
+      max_tokens: 1000,
     });
     res.json(completion);
   } catch (error) {
