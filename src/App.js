@@ -123,17 +123,14 @@ function App() {
       : true;
 
     if (allInputsFilled) {
-      console.log('All inputs filled, setting calcEquation to true');
       setCalcEquation(true);
       if (inputsChanged) {
-        console.log('Inputs changed, resetting solution');
         setAiSolution('');
         setHasCalculated(false);
         setCalcEquation(false);
         setTimeout(() => setCalcEquation(true), 0);
       }
     } else {
-      console.log('Not all inputs filled, setting calcEquation to false');
       setCalcEquation(false);
       setAiSolution('');
       setHasCalculated(false);

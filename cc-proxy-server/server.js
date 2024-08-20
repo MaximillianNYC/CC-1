@@ -51,7 +51,7 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
         { role: "system", content: "You are an AI that suggests a single emoji that best represents a given concept. Respond with only the emoji, nothing else." },
         ...messages
       ],
-      max_tokens: 1,
+      max_tokens: 5,
     });
 
     console.log('OpenAI API Response:', completion);
