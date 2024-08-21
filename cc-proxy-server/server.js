@@ -35,6 +35,12 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
             7. Adjust the tone: take your simplified solution and adjust its language so the tone sounds calculated, logical, and scientific.
 
             Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept.
+
+            Please review the examples below as a guide for your solutions:
+            Example 1: "coffee + milk = latte", "coffee - milk = black coffee", "coffee x milk = cappucino"
+            Example 2: "sushi - Japan + italy = pizza"
+            Example 3: "coffee + hot = hot coffee"
+            Example 4: "coffee x hot = burnt tongue"
           `
         },
         ...messages
