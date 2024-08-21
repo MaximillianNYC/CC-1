@@ -139,8 +139,6 @@ function App() {
 
   const handleGetAISolution = async () => {
     const equation = getEquationString();
-    console.log('Equation to be sent:', equation); // Log the equation
-
     if (!equation.trim()) {
       console.error('Equation is empty');
       setAiSolution('Error: Equation is empty');
@@ -148,7 +146,6 @@ function App() {
     }
 
     try {
-      console.log('Sending equation to API:', equation);
       const aiResponse = await API.getAISolution(equation);
       console.log(`Received response: ${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
