@@ -40,7 +40,7 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
             Example 1: "coffee + milk = latte", "coffee - milk = black coffee", "coffee x milk = cappucino"
             Example 2: "sushi - Japan + italy = pizza"
             Example 3: "coffee + hot = hot coffee"
-            Example 4: "coffee x hot = burnt tongue"
+            Example 4: "coffee x hot = burnt teongue"
           `
         },
         ...messages
