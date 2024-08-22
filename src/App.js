@@ -14,7 +14,6 @@ function App() {
   const [aiSolution, setAiSolution] = useState('');
   const prevOperationsRef = useRef();
   const [conceptEmojis, setConceptEmojis] = useState({});
-  const [hasCalculated, setHasCalculated] = useState(false);
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -113,14 +112,12 @@ function App() {
       setCalcEquation(true);
       if (inputsChanged) {
         setAiSolution('');
-        setHasCalculated(false);
         setCalcEquation(false);
         setTimeout(() => setCalcEquation(true), 0);
       }
     } else {
       setCalcEquation(false);
       setAiSolution('');
-      setHasCalculated(false);
     }
     prevOperationsRef.current = JSON.parse(JSON.stringify(operations));
   }, [operations]);
@@ -149,7 +146,6 @@ function App() {
       const aiResponse = await API.getAISolution(equation);
       console.log(`Received response: ${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
-      setHasCalculated(true);
     } catch (error) {
       console.error('Error getting AI solution:', error);
       setAiSolution('Error: Unable to get solution from AI');
