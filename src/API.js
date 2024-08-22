@@ -13,7 +13,7 @@ const API = {
     }
   },
 
-  getAISolution: async (equation) => {
+  getSolution: async (equation) => {
     try {
       const prompt = 
         `
@@ -29,7 +29,7 @@ const API = {
         throw new Error('Unexpected response structure from server');
       }
     } catch (error) {
-      console.error('Error in getAISolution:', error.response?.data || error.message);
+      console.error('Error in getSolution:', error.response?.data || error.message);
       throw error;
     }
   }

@@ -134,7 +134,7 @@ function App() {
       .trim();
   };
 
-  const handleGetAISolution = async () => {
+  const handlegetSolution = async () => {
     const equation = getEquationString();
     if (!equation.trim()) {
       console.error('Equation is empty');
@@ -143,7 +143,7 @@ function App() {
     }
 
     try {
-      const aiResponse = await API.getAISolution(equation);
+      const aiResponse = await API.getSolution(equation);
       console.log(`Received response: ${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
     } catch (error) {
@@ -181,7 +181,7 @@ function App() {
           <Solution 
             calcEquation={calcEquation} 
             aiSolution={aiSolution}
-            getAISolution={handleGetAISolution}
+            getSolution={handlegetSolution}
           />
         </div>
       </main>
