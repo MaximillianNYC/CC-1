@@ -36,11 +36,21 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
 
             Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept.
 
-            Please review the examples below as a guide for your solutions:
-            Example 1: "coffee + milk = latte", "coffee - milk = black coffee", "coffee x milk = cappucino"
-            Example 2: "sushi - Japan + italy = pizza"
-            Example 3: "coffee + hot = hot coffee"
-            Example 4: "coffee x hot = burnt teongue"
+            Please review the examples below as a guide for your solutions.
+
+            Example 1:
+            • "coffee + milk = latte"
+            • "coffee - milk = black coffee"
+            • "coffee × milk = cappucino"
+            • "coffee ÷ milk = macchiato"
+
+            Example 2:
+            • "king - man + woman = queen"
+            • "king - man + girl = princess"
+            • "king - man x wives = matriarchs"
+
+            Example 3:             
+            • "sushi - Japan + italy = pizza"
           `
         },
         ...messages
