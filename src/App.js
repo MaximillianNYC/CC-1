@@ -144,7 +144,7 @@ function App() {
 
     try {
       const aiResponse = await API.getSolution(equation);
-      console.log(`Received response: ${equation} = ${aiResponse}`);
+      console.log(`${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
     } catch (error) {
       console.error('Error getting AI solution:', error);
