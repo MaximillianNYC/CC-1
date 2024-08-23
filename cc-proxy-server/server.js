@@ -16,24 +16,46 @@ const openai = new OpenAI({
   
 app.post('/api/openai/concept-calculator', async (req, res) => {
   try {
-    const { messages, max_tokens } = req.body;
+    const { messages } = req.body;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: `You are an advanced Concept Calculator, designed to interpret input expressions that represent abstract relationships between concepts. Your goal is to analyze the words representing these concepts, locate their corresponding dot products in your training data, then use the specific operations provided to do arithmetic on their semantic embeddings to return a corresponding dot product which will you map to the closests corresponding natural language.
+        { role: "system", 
+          content: 
+          `
+            You are an expert in word arithmetic. You interpret concepts combined with mathmatical operations to represent semantic equations. Your goal is to analyze these semantic equation and calculate a logical solution in the form of a new concept.
+          
+            Let's think step by step:
+            1. Define each input concept: review the submitted expression and isolate each set of words inbetween operations (e.g. if the expression is "king - man + woman" you should create this array: "king, man, woman") these are the input concepts.
+            2. Define each input concept: take each input concept and define it independently so you have a sufficient understanding of its individual significance.
+            3. Rewrite the input equation: use the input concept definitions to rewrite the input expression so it provides more context (e.g. "king - man + woman" becomes "{definition of "king"} - {definition of "man"} + {definition of "queen"}").
+            4. Analyze the operations: review each operations included in the equation and consider its function (e.g. addition = combining concepts to create a new and more meaningful concept, subtraction = removing a concept to simplify or reduce the meaning, multiplication = repeating a concept to strengthen or emphasize its effect, division = breaking a concept's meaning into smaller and separate parts).
+            5. Solve the equation: calculate result of the operations on the input concept definitions.
+            6. Simplify solution: summarize the conceptual solution into a result that is less than 5 words without any punctuation.
+            7. Adjust the tone: take your simplified solution and adjust its language so the tone sounds calculated, logical, and scientific.
 
-        Follow this process:
-        1. Review the input expression and isolate each set of words inbetween operations (e.g. if the expression is "king - man + woman" you should create this array: "king, man, woman").
-        2. Individually map each set of words to a corresponding dot product in the vector database from your training data (e.g. take your array, "king, man, woman", and find their corresponding dot products, "(123), (456), (789)").
-        3. Use these dot products to rewrite the input expression with numbers instead of words (e.g. "king - man + woman" becomes "(123) - (456) + (789)").
-        4. Perform the numerical arithmatic to arrive at a numerical solution.
-        5. Use this numerical solution to find the closest dot product(s) in the vector database from your training data.
-        6. Take this dot product's corresponding sematic embedding & provide it to the user as the answer to their equation.
+            Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept.
 
-        Apply this approach consistently to all input equations. Focus on ensuring that each step of the process is logically sound and conceptually meaningful. Let's think step by step.` },
+            Please review the examples below as a guide for your solutions.
+
+            Example 1:
+            • "coffee + milk = latte"
+            • "coffee - milk = black coffee"
+            • "coffee × milk = cappucino"
+            • "coffee ÷ milk = macchiato"
+            
+            Example 2:
+            • "king - man + woman = queen"
+            • "king - man + girl = princess"
+            • "king - man x wives = matriarchs"
+
+            Example 3:             
+            • "sushi - Japan + italy = pizza"
+          `
+        },
         ...messages
       ],
-      max_tokens: max_tokens || 1000,
+      max_tokens: 1000,
     });
     res.json(completion);
   } catch (error) {
