@@ -43,7 +43,6 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
             • "coffee - milk = black coffee"
             • "coffee × milk = cappucino"
             • "coffee ÷ milk = macchiato"
-            
 
             Example 2:
             • "king - man + woman = queen"
