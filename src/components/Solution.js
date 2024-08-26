@@ -40,7 +40,7 @@ const Solution = ({ calcEquation, aiSolution, getSolution }) => {
             if (solutionRef.current) {
                 solutionRef.current.style.width = updateWidth(newResult);
             }
-        }, 1000);
+        }, 250);
         return () => clearTimeout(timeoutId);
     }, [calcEquation, updateWidth]);
 
