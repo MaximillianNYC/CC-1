@@ -4,7 +4,7 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
-const { sql } = require('@vercel/postgres')
+import { sql } from '@vercel/postgres';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -149,9 +149,10 @@ function App() {
       setAiSolution(aiResponse);
 
       try {
-        await sql`INSERT INTO user_inputs (input_value) VALUES (${equation} = ${aiResponse})`;
-      } catch (err) {
-        console.error(err);
+        await sql`INSERT INTO user_inputs (input_value) VALUES (${equation + ' = ' + aiResponse})`;
+        console.log('Input saved to database');
+      } catch (dbError) {
+        console.error('Error saving to database:', dbError);
       }
 
     } catch (error) {
