@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import '../App.css';
 
 const Solution = ({ calcEquation, aiSolution, getSolution }) => {
-    const [displayedResult, setDisplayedResult] = useState('');
+    // Remove the unused state variable
+    // const [displayedResult, setDisplayedResult] = useState('');
     const [showCalculation, setShowCalculation] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const solutionRef = useRef(null);
@@ -35,7 +36,8 @@ const Solution = ({ calcEquation, aiSolution, getSolution }) => {
         }
         const timeoutId = setTimeout(() => {
             const newResult = calcEquation ? "calculate" : "???";
-            setDisplayedResult(newResult);
+            // Remove the setDisplayedResult call
+            // setDisplayedResult(newResult);
             setIsLoading(false);
             if (solutionRef.current) {
                 solutionRef.current.style.width = updateWidth(newResult);
