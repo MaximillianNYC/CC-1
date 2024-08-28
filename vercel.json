@@ -1,15 +1,24 @@
-// {
-//   "version": 2,
-//   "builds": [
-//     {
-//       "src": "server.js",
-//       "use": "@vercel/node"
-//     }
-//   ],
-//   "routes": [
-//     {
-//       "src": "/(.*)",
-//       "dest": "server.js"
-//     }
-//   ]
-// }
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "cc-proxy-server/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "cc-proxy-server/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
