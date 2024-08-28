@@ -4,11 +4,11 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
-//import { createPool } from '@vercel/postgres';
+import { createPool } from '@vercel/postgres';
 
-//const pool = createPool({
-//  connectionString: process.env.POSTGRES_URL
-//});
+const pool = createPool({
+  connectionString: process.env.POSTGRES_URL
+});
 
 function App() {
   const [operations, setOperations] = useState([
@@ -152,7 +152,6 @@ function App() {
       console.log(`${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
 
-      // Save the equation and solution to the database
       try {
         await pool.sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${aiResponse})`;
         console.log('Equation saved to database');
