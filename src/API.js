@@ -28,6 +28,16 @@ const API = {
       console.error('Error in getSolution:', error.response?.data || error.message);
       throw error;
     }
+  },
+
+  saveEquation: async (equation, solution) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/save-equation`, { equation, solution });
+      return response.data;
+    } catch (error) {
+      console.error('Error saving equation:', error.response?.data || error.message);
+      throw error;
+    }
   }
 };
 

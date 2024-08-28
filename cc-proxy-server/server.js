@@ -2,6 +2,7 @@ const express = require('express');
 //const axios = require('axios');
 const cors = require('cors');
 const OpenAI = require('openai');
+const { sql } = require('@vercel/postgres');
 require('dotenv').config();
 
 const app = express();
@@ -100,6 +101,17 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
   } catch (error) {
     console.error('Error in emoji generator:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/save-equation', async (req, res) => {
+  try {
+    const { equation, solution } = req.body;
+    await sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${solution})`;
+    res.status(200).json({ message: 'Equation saved successfully' });
+  } catch (error) {
+    console.error('Error saving equation:', error);
+    res.status(500).json({ error: 'Failed to save equation' });
   }
 });
 
