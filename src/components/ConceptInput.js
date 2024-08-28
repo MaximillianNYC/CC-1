@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
+import RemoveIcon from '../assets/Remove.svg';
 
 const ConceptInput = ({ value, onChange, onBlur, onDelete, currentEmoji, initialWidth = '316px', placeholder = 'add concept', id }) => {
     const [inputValue, setInputValue] = useState(value);
@@ -126,7 +127,7 @@ const ConceptInput = ({ value, onChange, onBlur, onDelete, currentEmoji, initial
                 cursor: 'pointer'
             }}
         >
-            <img src="/Remove.svg" alt="Remove" style={{ width: '24px', height: '24px' }} />
+            <img src={RemoveIcon} alt="Remove" style={{ width: '24px', height: '24px' }} />
         </button>
         </div>
     );
