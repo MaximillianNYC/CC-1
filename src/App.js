@@ -4,11 +4,7 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
-import { createPool } from '@vercel/postgres';
-
-const pool = createPool({
-  connectionString: process.env.POSTGRES_URL
-});
+const { sql } = require('@vercel/postgres')
 
 function App() {
   const [operations, setOperations] = useState([
@@ -153,11 +149,11 @@ function App() {
       setAiSolution(aiResponse);
 
       try {
-        await pool.sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${aiResponse})`;
-        console.log('Equation saved to database');
-      } catch (dbError) {
-        console.error('Error saving equation to database:', dbError);
+        await sql`INSERT INTO user_inputs (input_value) VALUES (${equation} = ${aiResponse})`;
+      } catch (err) {
+        console.error(err);
       }
+
     } catch (error) {
       console.error('Error getting AI solution:', error);
       setAiSolution('Error: Unable to get solution from AI');
