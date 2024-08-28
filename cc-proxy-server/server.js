@@ -1,5 +1,4 @@
 const express = require('express');
-//const axios = require('axios');
 const cors = require('cors');
 const OpenAI = require('openai');
 const { sql } = require('@vercel/postgres');
@@ -116,7 +115,7 @@ app.post('/api/save-equation', async (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 3001;
+  const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`Proxy server listening at http://localhost:${port}`);
   });

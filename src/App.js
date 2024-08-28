@@ -4,7 +4,7 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
-const { sql } = require('@vercel/postgres')
+import { sql } from '@vercel/postgres';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -135,7 +135,7 @@ function App() {
       .trim();
   };
 
-  const handlegetSolution = async () => {
+  const handleGetSolution = async () => {
     const equation = getEquationString();
     if (!equation.trim()) {
       console.error('Equation is empty');
@@ -190,7 +190,7 @@ function App() {
           <Solution 
             calcEquation={calcEquation} 
             aiSolution={aiSolution}
-            getSolution={handlegetSolution}
+            getSolution={handleGetSolution}
           />
         </div>
       </main>
