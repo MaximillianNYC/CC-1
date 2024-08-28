@@ -21,12 +21,8 @@
       "dest": "/static/$1"
     },
     {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "src": "^/(.*\\.(json|ico|png|svg))",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
