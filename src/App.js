@@ -4,11 +4,11 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
-import { createPool } from '@vercel/postgres';
+//import { createPool } from '@vercel/postgres';
 
-const pool = createPool({
-  connectionString: process.env.POSTGRES_URL
-});
+//const pool = createPool({
+//  connectionString: process.env.POSTGRES_URL
+//});
 
 function App() {
   const [operations, setOperations] = useState([
