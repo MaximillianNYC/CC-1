@@ -6,6 +6,8 @@ import Solution from './components/Solution.js'
 import API from './API.js';
 import { sql } from '@vercel/postgres';
 
+sql.connect();
+
 function App() {
   const [operations, setOperations] = useState([
     { id: 1, input: '', operation: '+' },
