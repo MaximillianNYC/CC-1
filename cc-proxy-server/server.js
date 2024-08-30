@@ -115,7 +115,7 @@ app.post('/api/save-equation', async (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3001;
   app.listen(port, () => {
     console.log(`Proxy server listening at http://localhost:${port}`);
   });
