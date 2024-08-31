@@ -3,7 +3,6 @@ const cors = require('cors');
 const OpenAI = require('openai');
 const { sql } = require('@vercel/postgres');
 require('dotenv').config();
-const geoip = require('geoip-lite');
 
 const app = express();
 
@@ -121,25 +120,10 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
 app.post('/api/save-equation', async (req, res) => {
   try {
     const { equation, solution } = req.body;
-    
-    // Get IP address
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    
-    // Get location info
-    const geo = geoip.lookup(ip);
-    
-    const locationInfo = geo ? 
-      `${geo.city}, ${geo.region}, ${geo.country}` : 
-      'Location not found';
-
-    console.log('Attempting to save equation:', { equation, solution, ip, location: locationInfo });
+    console.log('Attempting to save equation:', { equation, solution });
     console.log('POSTGRES_URL exists:', !!process.env.POSTGRES_URL);
-
     if (process.env.POSTGRES_URL) {
-      await sql`
-        INSERT INTO equations (equation, solution, ip_address, location)
-        VALUES (${equation}, ${solution}, ${ip}, ${locationInfo})
-      `;
+      await sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${solution})`;
       console.log('Equation saved successfully');
       res.status(200).json({ message: 'Equation saved successfully' });
     } else {
