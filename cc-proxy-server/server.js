@@ -8,7 +8,7 @@ const app = express();
 
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://cc-1-roan.vercel.app/' 
+    ? 'https://cc-1-roan.vercel.app'
     : 'http://localhost:3000',
   optionsSuccessStatus: 200
 };
@@ -106,18 +106,28 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
 app.post('/api/save-equation', async (req, res) => {
   try {
     const { equation, solution } = req.body;
-    await sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${solution})`;
-    res.status(200).json({ message: 'Equation saved successfully' });
+    if (process.env.POSTGRES_URL) {
+      await sql`INSERT INTO user_inputs (equation, solution) VALUES (${equation}, ${solution})`;
+      res.status(200).json({ message: 'Equation saved successfully' });
+    } else {
+      console.log('POSTGRES_URL not found, skipping database save');
+      res.status(200).json({ message: 'Equation processed (database save skipped)' });
+    }
   } catch (error) {
     console.error('Error saving equation:', error);
     res.status(500).json({ error: 'Failed to save equation' });
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the Concept Calculator API');
+});
+
+
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3001;
   app.listen(port, () => {
-    console.log(`Proxy server listening at http://localhost:${port}`);
+    console.log(`Server listening at http://localhost:${port}`);
   });
 }
 
