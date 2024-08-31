@@ -106,8 +106,11 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
 app.post('/api/save-equation', async (req, res) => {
   try {
     const { equation, solution } = req.body;
+    console.log('Attempting to save equation:', { equation, solution });
+    console.log('POSTGRES_URL exists:', !!process.env.POSTGRES_URL);
     if (process.env.POSTGRES_URL) {
       await sql`INSERT INTO user_inputs (equation, solution) VALUES (${equation}, ${solution})`;
+      console.log('Equation saved successfully');
       res.status(200).json({ message: 'Equation saved successfully' });
     } else {
       console.log('POSTGRES_URL not found, skipping database save');
@@ -115,7 +118,7 @@ app.post('/api/save-equation', async (req, res) => {
     }
   } catch (error) {
     console.error('Error saving equation:', error);
-    res.status(500).json({ error: 'Failed to save equation' });
+    res.status(500).json({ error: 'Failed to save equation', details: error.message });
   }
 });
 
@@ -123,12 +126,21 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Concept Calculator API');
 });
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working', env: process.env.NODE_ENV });
+});
+
+console.log('Current environment:', process.env.NODE_ENV);
+console.log('CORS origin:', corsOptions.origin);
 
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3001;
+  console.log('Server port:', port);
   app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
 }
+
+console.log('OpenAI API Key set:', !!process.env.OPENAI_API_KEY);
 
 module.exports = app;
