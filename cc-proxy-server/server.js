@@ -10,7 +10,8 @@ const allowedOrigins = [
   'https://cc-1-roan.vercel.app',
   'https://conceptcalculator.com',
   'https://www.conceptcalculator.com',
-  'https://conceptcalculator.ai'
+  'https://conceptcalculator.ai',
+  'https://www.conceptcalculator.ai'
 ];
 
 const corsOptions = {
