@@ -109,7 +109,7 @@ app.post('/api/save-equation', async (req, res) => {
     console.log('Attempting to save equation:', { equation, solution });
     console.log('POSTGRES_URL exists:', !!process.env.POSTGRES_URL);
     if (process.env.POSTGRES_URL) {
-      await sql`INSERT INTO user_inputs (equation, solution) VALUES (${equation}, ${solution})`;
+      await sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${solution})`;
       console.log('Equation saved successfully');
       res.status(200).json({ message: 'Equation saved successfully' });
     } else {
