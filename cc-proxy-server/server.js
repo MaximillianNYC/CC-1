@@ -6,9 +6,21 @@ require('dotenv').config();
 
 const app = express();
 
+const allowedOrigins = [
+  'https://cc-1-roan.vercel.app',
+  'https://conceptcalculator.com',
+  'https://conceptcalculator.ai'
+];
+
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'https://cc-1-roan.vercel.app'
+  origin: process.env.NODE_ENV === 'production'
+    ? function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
     : 'http://localhost:3000',
   optionsSuccessStatus: 200
 };

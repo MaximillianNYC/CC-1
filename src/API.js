@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+const getApiBaseUrl = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return window.location.origin;
+  } else {
+    return process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  }
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const API = {
   getConceptEmoji: async (text) => {
