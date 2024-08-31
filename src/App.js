@@ -147,8 +147,12 @@ function App() {
       console.log(`${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
 
-      await API.saveEquation(equation, aiResponse);
-      console.log('Equation saved');
+      try {
+        await API.saveEquation(equation, aiResponse);
+        console.log('Equation saved');
+      } catch (saveError) {
+        console.error('Error saving equation:', saveError);
+      }
 
     } catch (error) {
       console.error('Error getting AI solution:', error);
