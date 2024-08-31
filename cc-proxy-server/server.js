@@ -9,6 +9,7 @@ const app = express();
 const allowedOrigins = [
   'https://cc-1-roan.vercel.app',
   'https://conceptcalculator.com',
+  'https://www.conceptcalculator.com',
   'https://conceptcalculator.ai'
 ];
 
