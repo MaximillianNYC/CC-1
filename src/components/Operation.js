@@ -6,12 +6,25 @@ const Operation = ({ character, onCharacterChange, addOperation }) => {
   const [localCharacter, setLocalCharacter] = useState(character);
 
   const toggleMenu = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded((prev) => !prev);
   };
 
   useEffect(() => {
     setLocalCharacter(character);
   }, [character]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isExpanded && !event.target.closest('.operation')) {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isExpanded]);
 
   const handleButtonClick = (value) => {
     setLocalCharacter(value);
@@ -84,24 +97,36 @@ const Operation = ({ character, onCharacterChange, addOperation }) => {
             <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
               <div 
                 style={operationMenuButtonStyle} className="operationMenuButton"
-                onClick={() => handleButtonClick('+')}>
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonClick('+');
+                }}>
                   +
               </div>
               <div 
                 style={operationMenuButtonStyle} className="operationMenuButton"
-                onClick={() => handleButtonClick('-')}>
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonClick('-');
+                }}>
                   -
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
               <div 
                   style={operationMenuButtonStyle} className="operationMenuButton"
-                  onClick={() => handleButtonClick('×')}>
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonClick('×');
+                  }}>
                     ×
                 </div>
                 <div 
                   style={operationMenuButtonStyle} className="operationMenuButton"
-                  onClick={() => handleButtonClick('÷')}>
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonClick('÷');
+                  }}>
                     ÷
                 </div>
             </div>
