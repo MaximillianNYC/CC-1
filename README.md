@@ -1,4 +1,4 @@
-![Concept Calculator Banner](ogImage.png)
+![Concept Calculator Banner](public/ogImage.png)
 
 # Concept Calculator Project
 
