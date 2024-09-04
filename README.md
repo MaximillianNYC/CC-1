@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+![Concept Calculator Banner](ogImage.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Concept Calculator Project
 
-## Available Scripts
+Welcome to the Concept Calculator project, a unique tool designed to perform semantic operations on conceptual words. This project leverages the power of natural language processing and machine learning to enable users to manipulate and transform concepts in a logical and meaningful way.
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+The Concept Calculator is built around a set of predefined operations that can be applied to conceptual words. These operations include addition (+), subtraction (-), multiplication (×), and division (÷). Each operation has a distinct effect on the input concepts, allowing users to create new concepts, modify existing ones, or break them down into smaller components.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The project's core functionality is based on a set of rules and guidelines that ensure the operations produce logical and coherent results. For example, adding two concepts might result in a new concept that combines the best traits of both, while subtracting a trait might lead to a diminished or simplified version of the original concept.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Key Features
 
-### `npm test`
+* **Semantic Operations**: Perform addition, subtraction, multiplication, and division on conceptual words to create new concepts or modify existing ones.
+* **Conceptual Word Manipulation**: Apply operations to words to change their meaning, scope, or complexity.
+* **Logical Results**: The project ensures that the results of operations are logical, coherent, and follow a set of predefined rules.
+* **Emoji Representation**: The project includes an emoji generator that suggests a single emoji to represent the resulting concept, making it easier to visualize and understand the outcome.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technical Details
 
-### `npm run build`
+The Concept Calculator project is built using Node.js, Express.js, and the OpenAI API. It leverages the OpenAI GPT-4o-mini model for natural language processing and machine learning capabilities. The project also utilizes CORS for secure and controlled access to the API.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To get started with the Concept Calculator project, follow these steps:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository to your local machine.
+2. Install the required dependencies using `npm install`.
+3. Start the server using `node server.js`.
+4. Use a tool like Postman or cURL to send requests to the API endpoints.
 
-### `npm run eject`
+## API Endpoints
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The project exposes two API endpoints:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* `/api/openai/concept-calculator`: This endpoint accepts a JSON payload with a list of messages, including the operation and concepts to be manipulated. It returns the result of the operation as a JSON object.
+* `/api/openai/emoji-generator`: This endpoint accepts a JSON payload with a message describing the concept to be represented by an emoji. It returns a JSON object with a single emoji that best represents the concept.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The Concept Calculator project is open to contributions and suggestions. If you're interested in contributing, please fork the repository, make your changes, and submit a pull request.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The Concept Calculator project is licensed under the MIT License.
