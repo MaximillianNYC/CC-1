@@ -1,7 +1,7 @@
 ![Concept Calculator Banner](public/ogImage.png)
 
 # CC-1 Concept Calculator
-CC-1 is an LLM-powered word arithmetic calculator designed & developed by [Maximillian Piras](https://www.maximillian.nyc) as an experiment to explore AI UX [beyond chatbots](https://www.smashingmagazine.com/2024/02/designing-ai-beyond-conversational-interfaces/). It allows you to insert concepts, as in any collection of words representing some notion of cultural significance, to perform mathematical operations (+, -, ×, ÷) resulting in a logical ‘solution’. 
+CC-1 is an LLM-powered word arithmetic calculator designed & developed by [Maximillian Piras](https://www.maximillian.nyc){target="_blank"} as an experiment to explore AI UX [beyond chatbots](https://www.smashingmagazine.com/2024/02/designing-ai-beyond-conversational-interfaces/){target="_blank"}. It allows you to insert concepts, as in any collection of words representing some notion of cultural significance, to perform mathematical operations (+, -, ×, ÷) resulting in a logical ‘solution’. 
 
 ## Intention
 This interface intends to make it easy to peer into an LLM’s world model by seeing what connections it draws between concepts. However, the results are far from the objectivity of a numerical calculation, as they’re inextricably influenced by necessary prompt engineering. To account for this subjectivity, all the code is open-sourced so anyone can look under the hood. If this project isn’t instructive at all, hopefully, it at least serves as a fun toy that spits out some entertaining answers.
