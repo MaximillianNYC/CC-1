@@ -81,6 +81,7 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
         },
         ...messages
       ],
+      store: true,
       max_tokens: 1000,
     });
     res.json(completion);
@@ -99,6 +100,7 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
         { role: "system", content: "You are an AI that suggests a single emoji that best represents a given concept. Respond with only the emoji, nothing else." },
         ...messages
       ],
+      store: true,
       max_tokens: 5,
     });
 
