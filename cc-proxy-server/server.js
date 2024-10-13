@@ -83,7 +83,7 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
       ],
       store: true,
       metadata: {
-        calculator: "cc-1"
+        endpoint: "operation"
       },
       max_tokens: 1000,
     });
@@ -104,6 +104,9 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
         ...messages
       ],
       store: true,
+      metadata: {
+        endpoint: "emojigen"
+      },
       max_tokens: 5,
     });
 
