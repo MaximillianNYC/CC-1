@@ -82,6 +82,9 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
         ...messages
       ],
       store: true,
+      metadata: {
+        calculator: "cc-1"
+      },
       max_tokens: 1000,
     });
     res.json(completion);
