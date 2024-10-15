@@ -16,16 +16,21 @@ a {
 
 .Nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 48px;
   font-family: "JetBrains Mono", monospace;
   color: #F15A22;
-  font-size: 14px;
-  font-weight: 900;
+  font-size: 20px;
+  font-weight: 200;
   font-style: normal;
   line-height: normal;
+  gap: 10px;
+}
+
+.Logo {
+  height: 16px;
 }
 
 .Footer {

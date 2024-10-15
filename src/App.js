@@ -4,6 +4,7 @@ import ConceptInput from './components/ConceptInput.js';
 import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
+import CC1Logo from './assets/CC1.svg';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -162,7 +163,10 @@ function App() {
 
   return (
     <div className="App">
-      <div className='Nav'>CC-1 CONCEPT CALCULATOR</div>
+      <div className='Nav'>
+        <img src={CC1Logo} alt="CC-1" className='Logo'/>
+        CONCEPT CALCULATOR
+      </div>
       <main className="mainContainer">
         <div className='calculator'>
           {operations.map((op, index) => (
