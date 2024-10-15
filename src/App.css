@@ -20,8 +20,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 40px;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  font-family: "JetBrains Mono", monospace;
   color: #F15A22;
   font-size: 14px;
   font-weight: 900;
@@ -36,8 +35,7 @@ a {
   justify-content: center;
   gap: 8px;
   height: 40px;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  font-family: "JetBrains Mono", monospace;
   color: #F15A22;
   font-size: 12px;
   font-weight: 500;
