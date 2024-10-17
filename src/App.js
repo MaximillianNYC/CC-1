@@ -168,7 +168,7 @@ function App() {
         <img src={CC1Logo} alt="CC-1" className='Logo'/>
         "CONCEPT CALCULATOR"
         <a href="https://github.com/MaximillianNYC/CC-1" target="_blank" rel="noopener noreferrer">
-          <img src={GitLogo} alt="GitHub" className='Logo'/>
+          <img src={GitLogo} alt="GitHub" className='Git'/>
         </a>
       </div>
       <main className="mainContainer">

@@ -35,6 +35,11 @@ a {
   height: 28px;
 }
 
+.Git {
+  height: 32px;
+  margin-left: 24px;
+}
+
 .Footer {
   display: flex;
   flex-direction: row;
