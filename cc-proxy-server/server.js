@@ -147,9 +147,6 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working', env: process.env.NODE_ENV });
 });
 
-console.log('Current environment:', process.env.NODE_ENV);
-console.log('CORS origin:', corsOptions.origin);
-
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3001;
   console.log('Server port:', port);
