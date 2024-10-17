@@ -5,6 +5,7 @@ import Operation from './components/Operation.js';
 import Solution from './components/Solution.js'
 import API from './API.js';
 import CC1Logo from './assets/CC1.svg';
+import GitLogo from './assets/GitHub.png';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -165,7 +166,10 @@ function App() {
     <div className="App">
       <div className='Nav'>
         <img src={CC1Logo} alt="CC-1" className='Logo'/>
-        {/* CONCEPT CALCULATOR */}
+        CONCEPT CALCULATOR
+        <a href="https://github.com/MaximillianNYC/CC-1" target="_blank" rel="noopener noreferrer">
+          <img src={GitLogo} alt="GitHub" className='Logo'/>
+        </a>
       </div>
       <main className="mainContainer">
         <div className='calculator'>
