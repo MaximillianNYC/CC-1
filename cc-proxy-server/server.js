@@ -128,18 +128,13 @@ app.post('/api/openai/emoji-generator', async (req, res) => {
 app.post('/api/save-equation', async (req, res) => {
   try {
     const { equation, solution } = req.body;
-    console.log('Attempting to save equation:', { equation, solution });
-    console.log('POSTGRES_URL exists:', !!process.env.POSTGRES_URL);
     if (process.env.POSTGRES_URL) {
       await sql`INSERT INTO equations (equation, solution) VALUES (${equation}, ${solution})`;
-      console.log('Equation saved successfully');
       res.status(200).json({ message: 'Equation saved successfully' });
     } else {
-      console.log('POSTGRES_URL not found, skipping database save');
       res.status(200).json({ message: 'Equation processed (database save skipped)' });
     }
   } catch (error) {
-    console.error('Error saving equation:', error);
     res.status(500).json({ error: 'Failed to save equation', details: error.message });
   }
 });
