@@ -165,7 +165,7 @@ function App() {
     <div className="App">
       <div className='Nav'>
         <img src={CC1Logo} alt="CC-1" className='Logo'/>
-        CONCEPT CALCULATOR
+        {/* CONCEPT CALCULATOR */}
       </div>
       <main className="mainContainer">
         <div className='calculator'>
