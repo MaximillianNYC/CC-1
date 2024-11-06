@@ -121,6 +121,36 @@ app.post('/api/save-equation', async (req, res) => {
   }
 });
 
+app.post('/api/anthropic/concept-calculator', async (req, res) => {
+  try {
+    const { messages } = req.body;
+    const response = await anthropic.messages.create({
+      model: "claude-3-sonnet-20240229",
+      max_tokens: 1000,
+      system: `You are an expert in word arithmetic, tasked with interpreting and solving semantic equations. Your role is to calculate logical solutions based on mathematical operations applied to conceptual words. Each operation has a distinct effect, and results should vary according to the unique role of each operation. Below is a list of instructions for each operation.
+
+        (+) Addition: Combine defining traits of inputs to expand on or blend the concept while maintaining identifiable characteristics.
+
+        (-) Subtraction: Remove defining traits or core characteristics, leading to a diminished or simplified version of the input concepts. 
+
+        (×) Multiplication: Amplify or exaggerates defining traits or core characteristic, resulting in a more powerful, enhanced version of the input concepts. The output should feel greater than the sum of its parts. 
+
+        (÷) Division: Breakdown input concepts into specific, smaller components or fragments, with a narrower scope or purpose. The result should be more specific or focused, often resulting in a subset or fragment of the input concepts. 
+
+        Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept (e.g., "🧠 scientist").`,
+      messages: messages.map(msg => ({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: msg.content
+      }))
+    });
+    
+    res.json(response);
+  } catch (error) {
+    console.error('Error in Anthropic concept calculator:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/', (req, res) => {
   res.send('Welcome to the Concept Calculator API');
 });
