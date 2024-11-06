@@ -46,41 +46,14 @@ app.post('/api/openai/concept-calculator', async (req, res) => {
             You are an expert in word arithmetic, tasked with interpreting and solving semantic equations. Your role is to calculate logical solutions based on mathematical operations applied to conceptual words. Each operation has a distinct effect, and results should vary according to the unique role of each operation. Below is a list of instructions for each operation.
 
             (+) Addition: Combine defining traits of inputs to expand on or blend the concept while maintaining identifiable characteristics.
-            Examples:
-              - "coffee + milk = latte" (combines coffee and milk to create a new drink)
-              - "hamburger + cheese = cheeseburger" (adds an ingredient to form a variation)
-              - "OpenAI + AGI = superintelligence" (merging AI with AGI to enhance capabilities)
-              - "king + queen = monarchy" (combining two figures into a unified system)
 
             (-) Subtraction: Remove defining traits or core characteristics, leading to a diminished or simplified version of the input concepts. 
-            Examples:
-              - "general - authority = lieutenant" (lowered rank due to loss of authority)
-              - "CEO - control = manager" (reduced influence or status)
-              - "sports team - star player = bad season" (team weakened by player loss)
-              - "coffee - caffeine = decaf" (removing a key component to reduce intensity)
 
             (×) Multiplication: Amplify or exaggerates defining traits or core characteristic, resulting in a more powerful, enhanced version of the input concepts. The output should feel greater than the sum of its parts. 
-            Examples:  
-              - "OpenAI × AGI = exponential intelligence" (multiplied intelligence capabilities)
-              - "movie × action = blockbuster" (intensified action results in a larger-scale movie)
-              - "city × culture = metropolis" (increased cultural influence leads to a global city)
-              - "team × talent = championship contender" (amplified talent increases competitiveness)
 
             (÷) Division: Breakdown input concepts into specific, smaller components or fragments, with a narrower scope or purpose. The result should be more specific or focused, often resulting in a subset or fragment of the input concepts. 
-            Examples:
-              - "OpenAI ÷ AGI = specialized AI systems" (narrowing down AGI capabilities into specific functions)
-              - "music ÷ lyrics = instrumental" (isolating the musical aspect from the lyrical content)
-              - "novel ÷ plot = short story" (removing complexity to create a simpler narrative)
-              - "city ÷ population = ghost town" (a city reduced by the loss of people)
 
-            Multi-operation examples:
-            - "king - man + woman = queen"
-            - "sushi - Japan + Italy = pizza"
-            - "sports team - star player A + star player B = playoff contender"
-
-            General guidance:
-              - Ensure each operation leads to a distinct result. Addition creates a new integrated concept, subtraction reduces or weakens, multiplication intensifies or amplifies, and division fragments or simplifies.
-              - Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept (e.g., "🧠 scientist").
+            Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept (e.g., "🧠 scientist").
           `
         },
         ...messages
