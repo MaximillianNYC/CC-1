@@ -21,26 +21,17 @@ const API = {
     }
   },
 
-  getSolution: async (equation, provider = 'openai') => {
+  getSolution: async (equation) => {
     try {
       const prompt = `Solve this conceptual equation: ${equation}.`;
-      const response = await axios.post(`${API_BASE_URL}/api/concept-calculator`, {
-        messages: [{ role: "user", content: prompt }],
-        provider
-      });
-
-      if (provider === 'anthropic') {
-        if (response.data && response.data.content && response.data.content[0]) {
-          return response.data.content[0].text;
-        }
+      const response = await axios.post(`${API_BASE_URL}/api/openai/concept-calculator`, { messages: [{ role: "user", content: prompt }] });
+      if (response.data && response.data.choices && response.data.choices[0] && response.data.choices[0].message) {
+        const solution = response.data.choices[0].message.content;
+        return solution;
       } else {
-        if (response.data && response.data.choices && response.data.choices[0] && response.data.choices[0].message) {
-          return response.data.choices[0].message.content;
-        }
+        console.error('Unexpected response structure:', response.data);
+        throw new Error('Unexpected response structure from server');
       }
-
-      console.error('Unexpected response structure:', response.data);
-      throw new Error('Unexpected response structure from server');
     } catch (error) {
       console.error('Error in getSolution:', error.response?.data || error.message);
       throw error;
