@@ -24,7 +24,7 @@ const API = {
   getSolution: async (equation) => {
     try {
       const prompt = `Solve this conceptual equation: ${equation}.`;
-      const response = await axios.post(`${API_BASE_URL}/api/openai/concept-calculator`, { messages: [{ role: "user", content: prompt }] });
+      const response = await axios.post(`${API_BASE_URL}/api/concept-calculator`, { messages: [{ role: "user", content: prompt }] });
       if (response.data && response.data.choices && response.data.choices[0] && response.data.choices[0].message) {
         const solution = response.data.choices[0].message.content;
         return solution;
