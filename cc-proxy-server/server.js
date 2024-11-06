@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
-// const Anthropic = require('@anthropic-ai/sdk');
+const Anthropic = require('@anthropic-ai/sdk');
 const { sql } = require('@vercel/postgres');
 require('dotenv').config();
 
@@ -35,9 +35,9 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-// const anthropic = new Anthropic({
-//     apiKey: process.env.ANTHROPIC_API_KEY,
-// });
+const anthropic = new Anthropic({
+     apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
 app.post('/api/openai/concept-calculator', async (req, res) => {
   try {
