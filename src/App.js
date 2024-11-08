@@ -162,7 +162,7 @@ function App() {
     }
 
     try {
-      const aiResponse = await API.getSolution(equation);
+      const aiResponse = await API.getSolution(equation, selectedModel);
       console.log(`${equation} = ${aiResponse}`);
       setAiSolution(aiResponse);
 
@@ -189,7 +189,10 @@ function App() {
             <img src={Gear} alt="settings" className='Settings'/>
             {settingsOpen && (
               <div className="SettingsDropdown" onClick={(e) => e.stopPropagation()}>
-                <div className="SettingsMenuItem" onClick={() => setSelectedModel('gpt4')}>
+                <div className="SettingsMenuItem" onClick={() => {
+                  setSelectedModel('gpt4');
+                  setSettingsOpen(false);
+                }}>
                   <input
                     type="radio" 
                     id="gpt4" 
@@ -199,7 +202,10 @@ function App() {
                   />
                   <label htmlFor="gpt4">GPT4o mini</label>
                 </div>
-                <div className="SettingsMenuItem" onClick={() => setSelectedModel('claude')}>
+                <div className="SettingsMenuItem" onClick={() => {
+                  setSelectedModel('claude');
+                  setSettingsOpen(false);
+                }}>
                   <input 
                     type="radio" 
                     id="claude" 
