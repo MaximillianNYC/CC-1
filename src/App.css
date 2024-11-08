@@ -75,18 +75,24 @@ a {
   border: 2px solid #CCCCCC;
   border-radius: 16px;
   z-index: 100;
-  width: 150px;
-  text-align: left;
+  width: 175px;
+  cursor: pointer;
+
 }
 
 .SettingsMenuItem {
+  display: flex;
+  flex-direction: row;
   margin: 8px;
-  padding: 8px 16px;
+  padding: 16px;
   font-family: "JetBrains Mono", monospace;
-  color: #F15A22;
+  color: black;
   font-size: 14px;
   border-radius: 8px;
-  cursor: pointer;
+  text-align: left;
+  align-items: center;
+  justify-content: left;
+  gap: 8px;
 }
 
 .SettingsMenuItem:hover {

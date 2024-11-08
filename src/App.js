@@ -18,6 +18,7 @@ function App() {
   const prevOperationsRef = useRef();
   const [conceptEmojis, setConceptEmojis] = useState({});
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('gpt4');
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -126,6 +127,20 @@ function App() {
     prevOperationsRef.current = JSON.parse(JSON.stringify(operations));
   }, [operations]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const settingsContainer = document.querySelector('.SettingsContainer');
+      if (settingsOpen && settingsContainer && !settingsContainer.contains(event.target)) {
+        setSettingsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [settingsOpen]);
+
   const getEquationString = () => {
     return operations
       .map((op, index) => {
@@ -173,9 +188,27 @@ function App() {
           <div className="SettingsContainer" onClick={() => setSettingsOpen(!settingsOpen)}>
             <img src={Gear} alt="settings" className='Settings'/>
             {settingsOpen && (
-              <div className="SettingsDropdown">
-                <div className="SettingsMenuItem">GPT4o mini</div>
-                <div className="SettingsMenuItem">Claude</div>
+              <div className="SettingsDropdown" onClick={(e) => e.stopPropagation()}>
+                <div className="SettingsMenuItem" onClick={() => setSelectedModel('gpt4')}>
+                  <input
+                    type="radio" 
+                    id="gpt4" 
+                    name="model" 
+                    checked={selectedModel === 'gpt4'}
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="gpt4">GPT4o mini</label>
+                </div>
+                <div className="SettingsMenuItem" onClick={() => setSelectedModel('claude')}>
+                  <input 
+                    type="radio" 
+                    id="claude" 
+                    name="model"
+                    checked={selectedModel === 'claude'}
+                    onChange={() => {}}
+                  />
+                  <label htmlFor="claude">Claude</label>
+                </div>
               </div>
             )}
           </div>
