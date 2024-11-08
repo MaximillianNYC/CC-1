@@ -6,6 +6,7 @@ import Solution from './components/Solution.js'
 import API from './API.js';
 import CC1Logo from './assets/CC1.svg';
 import GitLogo from './assets/GitHub.png';
+import Gear from './assets/gear.svg';
 
 function App() {
   const [operations, setOperations] = useState([
@@ -16,6 +17,7 @@ function App() {
   const [aiSolution, setAiSolution] = useState('');
   const prevOperationsRef = useRef();
   const [conceptEmojis, setConceptEmojis] = useState({});
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const handleCharacterChange = useCallback((id, newOperation) => {
     setOperations(prevOps => {
@@ -167,9 +169,20 @@ function App() {
       <div className='Nav'>
         <img src={CC1Logo} alt="CC-1" className='Logo'/>
         "CONCEPT CALCULATOR"
-        <a href="https://github.com/MaximillianNYC/CC-1" target="_blank" rel="noopener noreferrer">
-          <img src={GitLogo} alt="GitHub" className='Git'/>
-        </a>
+        <div className="NavButtons">
+          <div className="SettingsContainer" onClick={() => setSettingsOpen(!settingsOpen)}>
+            <img src={Gear} alt="settings" className='Settings'/>
+            {settingsOpen && (
+              <div className="SettingsDropdown">
+                <div className="SettingsMenuItem">GPT4o mini</div>
+                <div className="SettingsMenuItem">Claude</div>
+              </div>
+            )}
+          </div>
+          <a href="https://github.com/MaximillianNYC/CC-1" target="_blank" rel="noopener noreferrer">
+            <img src={GitLogo} alt="GitHub" className='Git'/>
+          </a>
+        </div>
       </div>
       <main className="mainContainer">
         <div className='calculator'>
