@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
-const Anthropic = require('@anthropic-ai/sdk');
+const { Anthropic } = require('@anthropic-ai/sdk');
 const { sql } = require('@vercel/postgres');
 require('dotenv').config();
 
@@ -124,9 +124,11 @@ app.post('/api/save-equation', async (req, res) => {
 app.post('/api/anthropic/concept-calculator', async (req, res) => {
   try {
     const { messages } = req.body;
+    const message = messages[0].content;
+
     const response = await anthropic.messages.create({
       model: "claude-3-sonnet-20240229",
-      max_tokens: 1000,
+      max_tokens: 1024,
       system: `You are an expert in word arithmetic, tasked with interpreting and solving semantic equations. Your role is to calculate logical solutions based on mathematical operations applied to conceptual words. Each operation has a distinct effect, and results should vary according to the unique role of each operation. Below is a list of instructions for each operation.
 
         (+) Addition: Combine defining traits of inputs to expand on or blend the concept while maintaining identifiable characteristics.
@@ -138,13 +140,14 @@ app.post('/api/anthropic/concept-calculator', async (req, res) => {
         (÷) Division: Breakdown input concepts into specific, smaller components or fragments, with a narrower scope or purpose. The result should be more specific or focused, often resulting in a subset or fragment of the input concepts. 
 
         Respond to the user with only the final solution (less than 5 words, no punctuation) that is preceded by an emoji that best illustrates the concept (e.g., "🧠 scientist").`,
-      messages: messages.map(msg => ({
-        role: msg.role === 'assistant' ? 'assistant' : 'user',
-        content: msg.content
-      }))
+      messages: [
+        { role: "user", content: message }
+      ]
     });
     
-    res.json(response);
+    res.json({
+      content: response.content[0].text
+    });
   } catch (error) {
     console.error('Error in Anthropic concept calculator:', error);
     res.status(500).json({ error: error.message });
