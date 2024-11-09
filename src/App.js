@@ -194,7 +194,9 @@ function App() {
                        event.stopPropagation();
                        setSelectedModel('gpt4');
                        setSettingsOpen(false);
-                       handleGetSolution();
+                       if (operations.every(op => op.input.trim() !== '')) {
+                         handleGetSolution();
+                       }
                      }}>
                   <input
                     type="radio" 
@@ -210,7 +212,9 @@ function App() {
                        event.stopPropagation();
                        setSelectedModel('claude');
                        setSettingsOpen(false);
-                       handleGetSolution();
+                       if (operations.every(op => op.input.trim() !== '')) {
+                         handleGetSolution();
+                       }
                      }}>
                   <input 
                     type="radio" 
