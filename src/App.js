@@ -213,7 +213,7 @@ function App() {
                     checked={selectedModel === 'claude'}
                     onChange={() => {}}
                   />
-                  <label htmlFor="claude">Claude</label>
+                  <label htmlFor="claude">Claude 3.5 Sonnet</label>
                 </div>
               </div>
             )}
