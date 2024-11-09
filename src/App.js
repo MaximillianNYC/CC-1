@@ -189,11 +189,12 @@ function App() {
             <img src={Gear} alt="settings" className='Settings'/>
             {settingsOpen && (
               <div className="SettingsDropdown" onClick={(e) => e.stopPropagation()}>
-                <div className="SettingsMenuItem" onClick={() => {
-                  e.stopPropagation();
-                  setSelectedModel('gpt4');
-                  setSettingsOpen(false);
-                }}>
+                <div className="SettingsMenuItem" 
+                     onClick={(event) => {
+                       event.stopPropagation();
+                       setSelectedModel('gpt4');
+                       setSettingsOpen(false);
+                     }}>
                   <input
                     type="radio" 
                     id="gpt4" 
@@ -203,11 +204,12 @@ function App() {
                   />
                   <label htmlFor="gpt4">GPT4o mini</label>
                 </div>
-                <div className="SettingsMenuItem" onClick={() => {
-                  e.stopPropagation();
-                  setSelectedModel('claude');
-                  setSettingsOpen(false);
-                }}>
+                <div className="SettingsMenuItem" 
+                     onClick={(event) => {
+                       event.stopPropagation();
+                       setSelectedModel('claude');
+                       setSettingsOpen(false);
+                     }}>
                   <input 
                     type="radio" 
                     id="claude" 
