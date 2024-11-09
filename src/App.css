@@ -105,6 +105,7 @@ a {
 
 input[type="radio"] {
   position: relative;
+  cursor: pointer;
   appearance: none;
   width: 16px;
   height: 16px;
@@ -220,4 +221,8 @@ input::placeholder {
   font-weight: 500;
   line-height: normal;
   border: 0px;
+}
+
+.SettingsMenuItem label {
+  cursor: pointer;
 }
