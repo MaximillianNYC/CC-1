@@ -127,7 +127,7 @@ app.post('/api/anthropic/concept-calculator', async (req, res) => {
     const message = messages[0].content;
 
     const response = await anthropic.messages.create({
-      model: "claude-3-sonnet-20240229",
+      model: "claude-3-5-sonnet-20241022",
       max_tokens: 4096,
       messages: [{ role: "user", content: message }],
       system: `You are an expert in word arithmetic, tasked with interpreting and solving semantic equations. Your role is to calculate logical solutions based on mathematical operations applied to conceptual words. Each operation has a distinct effect, and results should vary according to the unique role of each operation. Below is a list of instructions for each operation.
